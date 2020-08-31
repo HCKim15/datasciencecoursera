@@ -107,5 +107,23 @@ DT[,table(y)]
 DT[,w:=z^2]
 
 
+#mysql
+
+install.packages("RMySQL")
+
+uscsDb<-dbConnect(MySQL()user="genome", host="genome-mysql.cse.ucsc.edu")
+result<-dbGetQuery(ucscDb, "show databases"); dbDisconnect(ucscDb);
+
+hg19<-dbConnect(MySQL(),user="genome", db="hg19", host="genome-mysql.csc.ucsc.edu")
+allTables<-dbListTables(hg19)
+length(allTables)
+
+query<-dbSendQuery(hg19, "select * from affyU133Plus2 where misMatches between 1 and 3")
+affyMis<-fetch(query); quantile(affyMis$misMatches)
+
+dbDisconnect(hg19)
+
+
+
 
 
